@@ -1,0 +1,246 @@
+:root {
+  --bg-dark: #090d16;
+  --bg-bar: #0f172a;
+  --bg-element: #1e293b;
+  --border-color: #334155;
+  --text-primary: #f8fafc;
+  --text-muted: #94a3b8;
+  --accent-cyan: #06b6d4;
+  --accent-cyan-hover: #0891b2;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+body {
+  background-color: var(--bg-dark);
+  color: var(--text-primary);
+  height: 100vh;
+  overflow: hidden;
+}
+
+.app-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.topbar {
+  height: 56px;
+  background-color: var(--bg-bar);
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  z-index: 100;
+  gap: 12px;
+}
+
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  color: #fff;
+}
+
+.logo-link img {
+  width: 28px;
+  height: 28px;
+}
+
+.logo-title {
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.file-name {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  max-width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.editor-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg-element);
+  padding: 4px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+}
+
+.tool-group, .history-group, .color-picker-group {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.tool-btn {
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text-primary);
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  transition: all 0.15s ease;
+}
+
+.tool-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.tool-btn.active {
+  background: rgba(6, 182, 212, 0.2);
+  border-color: var(--accent-cyan);
+}
+
+.tool-divider {
+  width: 1px;
+  height: 20px;
+  background: var(--border-color);
+  margin: 0 4px;
+}
+
+.tool-select {
+  background: var(--bg-bar);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  font-size: 0.8rem;
+  padding: 4px 6px;
+  border-radius: 4px;
+  outline: none;
+}
+
+#strokeColor {
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  background: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.btn {
+  padding: 7px 14px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: none;
+  transition: all 0.2s ease;
+}
+
+.btn-primary {
+  background: var(--accent-cyan);
+  color: #0f172a;
+}
+
+.btn-primary:hover {
+  background: var(--accent-cyan-hover);
+}
+
+.btn-secondary {
+  background: var(--bg-element);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+}
+
+.btn-secondary:hover {
+  background: #334155;
+}
+
+/* Main Workspace */
+.workspace {
+  flex: 1;
+  overflow: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: #0b1120;
+}
+
+.canvas-wrapper {
+  max-width: 100%;
+  max-height: 100%;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+  border-radius: 4px;
+  overflow: hidden;
+  background: #111;
+}
+
+#mainCanvas {
+  display: block;
+  cursor: crosshair;
+}
+
+/* Video Player */
+.video-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  max-width: 900px;
+  width: 100%;
+}
+
+#mainVideo {
+  width: 100%;
+  max-height: 70vh;
+  border-radius: 12px;
+  background: #000;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.7);
+  outline: none;
+}
+
+.video-meta-card {
+  width: 100%;
+  background: var(--bg-bar);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 12px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.9rem;
+}
+
+.meta-label {
+  color: var(--text-muted);
+  margin-right: 6px;
+}
+
+.text-green {
+  color: #34d399;
+  font-weight: 600;
+}

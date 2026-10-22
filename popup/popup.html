@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>HaniShot</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="popup-container">
+    <!-- Top Brand Header -->
+    <header class="header">
+      <div class="brand">
+        <img src="../icons/icon-32.png" alt="HaniShot Logo" class="logo">
+        <span class="brand-name">HaniShot</span>
+      </div>
+      <div class="header-links">
+        <a href="../gallery/gallery.html" target="_blank" class="nav-icon-btn" title="Open Local Gallery">📁</a>
+        <a href="../options/options.html" target="_blank" class="nav-icon-btn" title="Open Settings">⚙️</a>
+      </div>
+    </header>
+
+    <!-- Update Notification Banner (Hidden unless update is available) -->
+    <div id="updateBanner" class="update-banner" style="display: none;">
+      <div class="update-banner-content">
+        <span class="update-icon">🚀</span>
+        <div class="update-text">
+          <strong id="updateVersionTitle">Update Available!</strong>
+          <span id="updateDesc">Run <code>git pull</code> to update.</span>
+        </div>
+      </div>
+      <a href="https://github.com/niceworkdone/HaniShot" target="_blank" class="update-link-btn">View</a>
+    </div>
+
+    <!-- Normal View (When not recording) -->
+    <div id="idleView">
+      <!-- Nav Tabs -->
+      <nav class="nav-tabs">
+        <button type="button" class="tab-btn active" id="tabBtnRecord">🎥 Record Video</button>
+        <button type="button" class="tab-btn" id="tabBtnCapture">📸 Screenshot</button>
+      </nav>
+
+      <!-- Panel: Record Video -->
+      <section class="panel active" id="panelRecord">
+        <div class="record-type-grid">
+          <label class="type-card active">
+            <input type="radio" name="recordType" value="desktop" checked>
+            <span class="type-icon">🖥️</span>
+            <span class="type-label">Screen</span>
+          </label>
+          <label class="type-card">
+            <input type="radio" name="recordType" value="tab">
+            <span class="type-icon">📑</span>
+            <span class="type-label">Tab</span>
+          </label>
+          <label class="type-card">
+            <input type="radio" name="recordType" value="camera">
+            <span class="type-icon">📷</span>
+            <span class="type-label">Camera</span>
+          </label>
+        </div>
+
+        <!-- Audio Sources -->
+        <div class="audio-toggles">
+          <div class="toggle-row">
+            <div class="toggle-left">
+              <span class="icon">🎙️</span>
+              <span>Microphone</span>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="micToggle" checked>
+              <span class="slider round"></span>
+            </label>
+          </div>
+
+          <div class="toggle-row" id="sysAudioRow">
+            <div class="toggle-left">
+              <span class="icon">🔊</span>
+              <span>System / Tab Audio</span>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="sysAudioToggle" checked>
+              <span class="slider round"></span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Split Duration Notice -->
+        <div class="split-info-pill">
+          <div class="split-pill-text">
+            <span>✂️ Auto-Split: <strong id="splitDurationDisplay">30 min</strong></span>
+          </div>
+          <a href="../options/options.html" target="_blank" class="split-edit-link">Edit</a>
+        </div>
+
+        <!-- Countdown Selector -->
+        <div class="quick-row">
+          <span class="quick-label">Countdown:</span>
+          <select id="quickCountdown" class="quick-select">
+            <option value="0">Off</option>
+            <option value="3" selected>3s</option>
+            <option value="5">5s</option>
+            <option value="10">10s</option>
+          </select>
+        </div>
+
+        <button type="button" id="startRecordBtn" class="btn btn-record">
+          <span class="record-dot"></span>
+          Start Recording
+        </button>
+      </section>
+
+      <!-- Panel: Screenshot -->
+      <section class="panel" id="panelCapture">
+        <div class="capture-actions">
+          <button type="button" class="capture-card-btn" id="btnCaptureVisible">
+            <span class="c-icon">👁️</span>
+            <div class="c-info">
+              <strong>Visible Part</strong>
+              <span>Capture what you see right now</span>
+            </div>
+          </button>
+
+          <button type="button" class="capture-card-btn" id="btnCaptureArea">
+            <span class="c-icon">✂️</span>
+            <div class="c-info">
+              <strong>Selected Area</strong>
+              <span>Click and drag to select any region</span>
+            </div>
+          </button>
+
+          <button type="button" class="capture-card-btn" id="btnCaptureFull">
+            <span class="c-icon">📜</span>
+            <div class="c-info">
+              <strong>Full Page</strong>
+              <span>Scroll and capture entire web page</span>
+            </div>
+          </button>
+        </div>
+      </section>
+    </div>
+
+    <!-- Active Recording View -->
+    <div id="recordingView" style="display: none;">
+      <div class="rec-active-box">
+        <div class="rec-header">
+          <div class="rec-pulsing-badge">
+            <span class="pulse-indicator"></span>
+            RECORDING
+          </div>
+          <span class="rec-part-badge" id="recPartDisplay">Part 1</span>
+        </div>
+
+        <div class="timer-box">
+          <span id="recTimerDisplay">00:00</span>
+        </div>
+
+        <div class="rec-split-hint">
+          Auto-cutting into segments of <span id="recSplitLengthText">30 min</span>
+        </div>
+
+        <div class="rec-controls">
+          <button type="button" id="recPauseBtn" class="btn-ctrl" title="Pause / Resume">⏸️ Pause</button>
+          <button type="button" id="recStopBtn" class="btn-ctrl btn-stop" title="Stop & Save">⏹ Stop & Save</button>
+          <button type="button" id="recDiscardBtn" class="btn-ctrl btn-discard" title="Discard">✕</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Status Footer -->
+    <footer class="footer">
+      <div class="footer-top">
+        <span class="footer-badge">Unlimited</span>
+        <span class="footer-text">100% Local • Zero Limits</span>
+      </div>
+      <div class="footer-bottom">
+        <span>Developed with ❤️ by <a href="https://niceworkdone.com" target="_blank" rel="noopener noreferrer" class="nwd-link">NWD</a></span>
+      </div>
+    </footer>
+  </div>
+
+  <script type="module" src="popup.js"></script>
+</body>
+</html>

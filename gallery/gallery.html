@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>HaniShot Local Media Gallery</title>
+  <link rel="stylesheet" href="gallery.css">
+</head>
+<body>
+  <div class="gallery-container">
+    <header class="gallery-header">
+      <div class="brand">
+        <img src="../icons/icon-48.png" alt="HaniShot">
+        <div>
+          <h1>HaniShot Gallery</h1>
+          <p>All your local recordings and screenshots — 100% private and stored on your machine.</p>
+        </div>
+      </div>
+      <div class="header-controls">
+        <div class="storage-pill">
+          <span>Storage:</span> <strong id="storageUsageDisplay">0 MB</strong>
+        </div>
+        <a href="../options/options.html" class="btn btn-secondary">⚙️ Options</a>
+      </div>
+    </header>
+
+    <!-- Filters & Search -->
+    <div class="filter-bar">
+      <div class="filter-tabs">
+        <button type="button" class="tab-btn active" data-filter="all">All Items (<span id="countAll">0</span>)</button>
+        <button type="button" class="tab-btn" data-filter="video">🎥 Videos (<span id="countVideos">0</span>)</button>
+        <button type="button" class="tab-btn" data-filter="image">📸 Screenshots (<span id="countImages">0</span>)</button>
+      </div>
+
+      <div class="filter-actions">
+        <button type="button" id="refreshBtn" class="btn btn-icon" title="Refresh">🔄</button>
+      </div>
+    </div>
+
+    <!-- Media Grid -->
+    <main class="grid-container" id="mediaGrid">
+      <div class="empty-state" id="emptyState" style="display: none;">
+        <span class="empty-icon">📁</span>
+        <h3>No media saved yet</h3>
+        <p>Use HaniShot to record videos or capture screenshots. They will appear here instantly!</p>
+      </div>
+    </main>
+
+    <footer class="gallery-footer">
+      <p>Developed with ❤️ by <a href="https://niceworkdone.com" target="_blank" rel="noopener noreferrer" class="nwd-link">NWD</a> (Nice Work Done)</p>
+    </footer>
+  </div>
+
+  <script type="module" src="gallery.js"></script>
+</body>
+</html>

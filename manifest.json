@@ -1,0 +1,80 @@
+{
+  "manifest_version": 3,
+  "name": "HaniShot - Screen Recorder & Screenshot",
+  "version": "1.0.0",
+  "description": "Unlimited screen & tab video recording with customizable auto-split length, full-page screenshots, and 100% local storage.",
+  "icons": {
+    "16": "icons/icon-16.png",
+    "32": "icons/icon-32.png",
+    "48": "icons/icon-48.png",
+    "128": "icons/icon-128.png"
+  },
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_title": "HaniShot Screen Recorder & Screenshot",
+    "default_icon": {
+      "16": "icons/icon-16.png",
+      "32": "icons/icon-32.png",
+      "48": "icons/icon-48.png",
+      "128": "icons/icon-128.png"
+    }
+  },
+  "options_ui": {
+    "page": "options/options.html",
+    "open_in_tab": true
+  },
+  "background": {
+    "service_worker": "background/background.js",
+    "type": "module"
+  },
+  "permissions": [
+    "storage",
+    "unlimitedStorage",
+    "downloads",
+    "activeTab",
+    "scripting",
+    "offscreen",
+    "tabCapture",
+    "contextMenus",
+    "alarms"
+  ],
+  "commands": {
+    "capture-visible": {
+      "suggested_key": {
+        "default": "Alt+Shift+V",
+        "mac": "Alt+Shift+V"
+      },
+      "description": "Capture visible page"
+    },
+    "capture-area": {
+      "suggested_key": {
+        "default": "Alt+Shift+S",
+        "mac": "Alt+Shift+S"
+      },
+      "description": "Capture selected area"
+    },
+    "capture-full": {
+      "suggested_key": {
+        "default": "Alt+Shift+F",
+        "mac": "Alt+Shift+F"
+      },
+      "description": "Capture full page"
+    },
+    "toggle-record": {
+      "suggested_key": {
+        "default": "Alt+Shift+R",
+        "mac": "Alt+Shift+R"
+      },
+      "description": "Start or stop screen recording"
+    }
+  },
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "icons/*",
+        "content/*"
+      ],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}

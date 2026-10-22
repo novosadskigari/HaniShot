@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>HaniShot Settings & Options</title>
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <div class="container">
+    <header class="page-header">
+      <div class="brand">
+        <img src="../icons/icon-48.png" alt="HaniShot Logo" class="brand-logo">
+        <div class="brand-text">
+          <h1>HaniShot Options</h1>
+          <p>Configure screen recording, video auto-split, and screenshot preferences</p>
+        </div>
+      </div>
+      <div class="header-badges">
+        <span class="badge badge-unlimited">Unlimited Recording</span>
+        <span class="badge badge-local">100% Local Storage</span>
+      </div>
+    </header>
+
+    <main class="content">
+      <!-- Section: Video Splitting / Cutting -->
+      <section class="card highlight-card">
+        <div class="card-header">
+          <div class="icon-title">
+            <span class="card-icon">✂️</span>
+            <div>
+              <h2>Automatic Video Splitting (Chunking)</h2>
+              <p class="section-desc">Split long recordings automatically into playable segments to safeguard against browser memory limits.</p>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="form-group toggle-group">
+            <div>
+              <label for="enableSplit" class="form-label">Enable Auto-Split Video</label>
+              <div class="form-subtext">When enabled, videos will be seamlessly cut into distinct numbered files while continuing to record.</div>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="enableSplit" checked>
+              <span class="slider round"></span>
+            </label>
+          </div>
+
+          <div class="form-group" id="splitLengthContainer">
+            <label for="splitDurationMinutes" class="form-label">Video Split Length (Minutes)</label>
+            <div class="split-input-wrapper">
+              <input type="number" id="splitDurationMinutes" min="1" max="360" value="30" class="styled-input">
+              <span class="input-unit">minutes (Default: 30)</span>
+            </div>
+            <div class="preset-buttons">
+              <button type="button" class="preset-btn" data-minutes="10">10 min</button>
+              <button type="button" class="preset-btn" data-minutes="15">15 min</button>
+              <button type="button" class="preset-btn active" data-minutes="30">30 min (Default)</button>
+              <button type="button" class="preset-btn" data-minutes="45">45 min</button>
+              <button type="button" class="preset-btn" data-minutes="60">60 min</button>
+            </div>
+            <p class="field-hint">Example: With a 30 min split, a 75 min recording will generate Part 1 (30m), Part 2 (30m), and Part 3 (15m).</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section: Video Recording Preferences -->
+      <section class="card">
+        <div class="card-header">
+          <div class="icon-title">
+            <span class="card-icon">🎥</span>
+            <div>
+              <h2>Video Quality & Encoding</h2>
+              <p class="section-desc">Tune your recording resolution and frame rate.</p>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="form-row">
+            <div class="form-col">
+              <label for="videoResolution" class="form-label">Default Resolution</label>
+              <select id="videoResolution" class="styled-select">
+                <option value="native">Native / Display Max (Up to 4K)</option>
+                <option value="1080p" selected>Full HD (1080p)</option>
+                <option value="720p">HD (720p)</option>
+              </select>
+            </div>
+            <div class="form-col">
+              <label for="videoFps" class="form-label">Frame Rate (FPS)</label>
+              <select id="videoFps" class="styled-select">
+                <option value="30" selected>30 FPS (Recommended)</option>
+                <option value="60">60 FPS (Ultra Smooth)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-col">
+              <label for="videoFormat" class="form-label">Container Format</label>
+              <select id="videoFormat" class="styled-select">
+                <option value="webm" selected>WebM (VP9/Opus - Best Web & Local Performance)</option>
+                <option value="mp4">MP4 (Where supported by browser encoder)</option>
+              </select>
+            </div>
+            <div class="form-col">
+              <label for="countdownSeconds" class="form-label">Start Countdown Timer</label>
+              <select id="countdownSeconds" class="styled-select">
+                <option value="0">No Countdown</option>
+                <option value="3" selected>3 Seconds</option>
+                <option value="5">5 Seconds</option>
+                <option value="10">10 Seconds</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section: Audio Preferences -->
+      <section class="card">
+        <div class="card-header">
+          <div class="icon-title">
+            <span class="card-icon">🎙️</span>
+            <div>
+              <h2>Audio Settings</h2>
+              <p class="section-desc">Configure default microphone and system audio capture behavior.</p>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="form-group toggle-group">
+            <div>
+              <label for="defaultMic" class="form-label">Enable Microphone by Default</label>
+              <div class="form-subtext">Record commentary with your selected audio input.</div>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="defaultMic" checked>
+              <span class="slider round"></span>
+            </label>
+          </div>
+
+          <div class="form-group toggle-group">
+            <div>
+              <label for="defaultSystemAudio" class="form-label">Enable System / Tab Audio by Default</label>
+              <div class="form-subtext">Capture computer sounds, YouTube audio, meetings, and games.</div>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="defaultSystemAudio" checked>
+              <span class="slider round"></span>
+            </label>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section: Screenshot Preferences -->
+      <section class="card">
+        <div class="card-header">
+          <div class="icon-title">
+            <span class="card-icon">📸</span>
+            <div>
+              <h2>Screenshot Settings</h2>
+              <p class="section-desc">Configure image capture format and behavior.</p>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="form-row">
+            <div class="form-col">
+              <label for="screenshotFormat" class="form-label">Image Format</label>
+              <select id="screenshotFormat" class="styled-select">
+                <option value="png" selected>PNG (Lossless, crystal clear)</option>
+                <option value="jpeg">JPEG (Compressed, smaller size)</option>
+              </select>
+            </div>
+            <div class="form-col">
+              <label for="autoOpenEditor" class="form-label">After Capturing</label>
+              <select id="autoOpenEditor" class="styled-select">
+                <option value="editor" selected>Open in HaniShot Annotation Editor</option>
+                <option value="download">Download immediately to disk</option>
+                <option value="both">Both (Save & Open Editor)</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section: Storage & Downloads -->
+      <section class="card">
+        <div class="card-header">
+          <div class="icon-title">
+            <span class="card-icon">💾</span>
+            <div>
+              <h2>Local Storage & Privacy</h2>
+              <p class="section-desc">HaniShot never transmits your media to any cloud or remote server.</p>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="form-group toggle-group">
+            <div>
+              <label for="autoDownloadVideo" class="form-label">Auto-Download Files on Completion</label>
+              <div class="form-subtext">Automatically trigger a browser download for every recorded video chunk or screenshot.</div>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="autoDownloadVideo" checked>
+              <span class="slider round"></span>
+            </label>
+          </div>
+
+          <div class="storage-info-box">
+            <div class="storage-stats">
+              <div><strong>IndexedDB Storage Used:</strong> <span id="storageUsed">Calculating...</span></div>
+              <div class="sub-stats">Unlimited local quota granted via Chrome storage permissions.</div>
+            </div>
+            <div class="storage-actions">
+              <a href="../gallery/gallery.html" class="btn btn-secondary">Open Local Gallery</a>
+              <button type="button" id="clearAllStorageBtn" class="btn btn-danger">Clear Local Cache</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section: Updates & GitHub -->
+      <section class="card">
+        <div class="card-header">
+          <div class="icon-title">
+            <span class="card-icon">🚀</span>
+            <div>
+              <h2>Updates & Version</h2>
+              <p class="section-desc">Keep HaniShot up to date with new features and improvements.</p>
+            </div>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="storage-info-box">
+            <div class="storage-stats">
+              <div><strong>Installed Version:</strong> <span id="currentVersionDisplay">v1.0.0</span></div>
+              <div class="sub-stats" id="updateStatusText">Automatic background checks enabled via GitHub.</div>
+            </div>
+            <div class="storage-actions">
+              <button type="button" id="checkUpdateBtn" class="btn btn-secondary">Check for Updates</button>
+              <a href="https://github.com/niceworkdone/HaniShot" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">GitHub Repository</a>
+            </div>
+          </div>
+          <div id="updateAlertBox" class="update-alert-box" style="display: none;">
+            <div class="alert-icon">✨</div>
+            <div class="alert-content">
+              <strong id="alertTitle">New Version Available!</strong>
+              <p id="alertBody">Update via <code>git pull</code> in your cloned folder, then reload the extension in <code>chrome://extensions</code>.</p>
+            </div>
+            <a id="alertLink" href="https://github.com/niceworkdone/HaniShot/releases" target="_blank" class="btn btn-primary">View Release</a>
+          </div>
+        </div>
+      </section>
+
+      <div class="save-bar">
+        <button type="button" id="saveBtn" class="btn btn-primary">Save Settings</button>
+        <span id="saveStatus" class="save-status"></span>
+      </div>
+
+      <footer class="options-footer">
+        <p>Developed with ❤️ by <a href="https://niceworkdone.com" target="_blank" rel="noopener noreferrer" class="nwd-link">NWD</a> (Nice Work Done)</p>
+      </footer>
+    </main>
+  </div>
+
+  <script type="module" src="options.js"></script>
+</body>
+</html>

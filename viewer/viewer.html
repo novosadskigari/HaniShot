@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>HaniShot Viewer & Editor</title>
+  <link rel="stylesheet" href="viewer.css">
+</head>
+<body>
+  <div class="app-layout">
+    <!-- Top Bar -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <a href="../gallery/gallery.html" class="logo-link" title="Open HaniShot Gallery">
+          <img src="../icons/icon-32.png" alt="HaniShot">
+          <span class="logo-title">HaniShot</span>
+        </a>
+        <span class="file-name" id="fileNameDisplay">Untitled</span>
+      </div>
+
+      <!-- Screenshot Tools (Shown only for images) -->
+      <div class="editor-toolbar" id="imageToolbar">
+        <div class="tool-group">
+          <button type="button" class="tool-btn active" data-tool="select" title="Move / Select">✋</button>
+          <button type="button" class="tool-btn" data-tool="rect" title="Rectangle">⬜</button>
+          <button type="button" class="tool-btn" data-tool="arrow" title="Arrow">↗️</button>
+          <button type="button" class="tool-btn" data-tool="pen" title="Pen / Draw">✏️</button>
+          <button type="button" class="tool-btn" data-tool="text" title="Add Text">🔤</button>
+          <button type="button" class="tool-btn" data-tool="blur" title="Blur / Redact">🌫️</button>
+        </div>
+
+        <div class="tool-divider"></div>
+
+        <div class="color-picker-group">
+          <input type="color" id="strokeColor" value="#ef4444" title="Annotation Color">
+          <select id="strokeWidth" class="tool-select" title="Stroke Width">
+            <option value="2">Thin (2px)</option>
+            <option value="4" selected>Normal (4px)</option>
+            <option value="8">Thick (8px)</option>
+          </select>
+        </div>
+
+        <div class="tool-divider"></div>
+
+        <div class="history-group">
+          <button type="button" class="tool-btn" id="undoBtn" title="Undo (Ctrl+Z)">↩️</button>
+          <button type="button" class="tool-btn" id="clearBtn" title="Clear Annotations">🗑️</button>
+        </div>
+      </div>
+
+      <!-- Action buttons -->
+      <div class="topbar-right">
+        <button type="button" id="copyBtn" class="btn btn-secondary" title="Copy to clipboard">📋 Copy</button>
+        <button type="button" id="downloadBtn" class="btn btn-primary" title="Download file to computer">⬇️ Download</button>
+      </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <main class="workspace" id="workspaceContainer">
+      <!-- Image Canvas Container -->
+      <div class="canvas-wrapper" id="canvasWrapper">
+        <canvas id="mainCanvas"></canvas>
+      </div>
+
+      <!-- Video Player Container (Hidden by default) -->
+      <div class="video-wrapper" id="videoWrapper" style="display: none;">
+        <video id="mainVideo" controls autoplay></video>
+        <div class="video-meta-card">
+          <div class="meta-item">
+            <span class="meta-label">File Name:</span>
+            <span class="meta-val" id="metaName">-</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">File Size:</span>
+            <span class="meta-val" id="metaSize">-</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Storage:</span>
+            <span class="meta-val text-green">100% Local (Unlimited)</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Author:</span>
+            <span class="meta-val"><a href="https://niceworkdone.com" target="_blank" rel="noopener noreferrer" style="color: #38bdf8; text-decoration: none;">Developed with ❤️ by NWD</a></span>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script type="module" src="viewer.js"></script>
+</body>
+</html>
