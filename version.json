@@ -3,5 +3,5 @@
   "releaseDate": "2026-11-02",
   "changelog": "v1.0.2: Screenshot first tab order, video recording and download fixes, transparent crop mask overlay, NWD credits and donation links.",
   "repoUrl": "https://github.com/novosadskigari/HaniShot",
-  "downloadUrl": "https://github.com/novosadskigari/HaniShot/archive/refs/heads/main.zip"
+  "downloadUrl": "https://github.com/novosadskigari/HaniShot/archive/refs/tags/v1.0.2.zip"
 }

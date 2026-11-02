@@ -151,6 +151,14 @@ function setupEventListeners() {
     showStatus('Settings saved successfully!');
   });
 
+  const reloadBtn = document.getElementById('reloadExtensionBtn');
+  if (reloadBtn) {
+    reloadBtn.addEventListener('click', () => {
+      chrome.runtime.reload();
+      setTimeout(() => window.location.reload(), 150);
+    });
+  }
+
   const checkUpdateBtn = document.getElementById('checkUpdateBtn');
   if (checkUpdateBtn) {
     checkUpdateBtn.addEventListener('click', () => {
