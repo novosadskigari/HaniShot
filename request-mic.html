@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>HaniShot - Microphone Permission</title>
+  <link rel="icon" type="image/png" href="icons/icon-32.png">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      background-color: #0b0f19;
+      color: #f1f5f9;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .card {
+      background: #151d30;
+      border: 1px solid #23314e;
+      border-radius: 16px;
+      padding: 36px 32px;
+      max-width: 480px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    }
+    .logo {
+      width: 64px;
+      height: 64px;
+      margin-bottom: 20px;
+    }
+    h1 {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: #ffffff;
+    }
+    p {
+      color: #94a3b8;
+      font-size: 14px;
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      color: #111827;
+      font-weight: 700;
+      font-size: 15px;
+      padding: 14px 28px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 14px rgba(245, 158, 11, 0.35);
+      width: 100%;
+    }
+    .btn:hover:not(:disabled) {
+      background: linear-gradient(135deg, #fbbf24, #f59e0b);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(245, 158, 11, 0.45);
+    }
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+    .status-box {
+      margin-top: 20px;
+      padding: 14px;
+      border-radius: 8px;
+      font-size: 14px;
+      line-height: 1.5;
+      display: none;
+    }
+    .status-box.success {
+      display: block;
+      background: rgba(16, 185, 129, 0.15);
+      border: 1px solid #10b981;
+      color: #34d399;
+    }
+    .status-box.error {
+      display: block;
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid #ef4444;
+      color: #f87171;
+    }
+    .tip {
+      margin-top: 24px;
+      padding-top: 18px;
+      border-top: 1px solid #23314e;
+      font-size: 12px;
+      color: #64748b;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <img src="icons/icon-128.png" alt="HaniShot" class="logo">
+    <h1>Microphone Permission</h1>
+    <p>
+      Browser security requires microphone permission to be granted from a full browser tab.
+      Click below and select <strong>Allow</strong> in the browser prompt to record audio.
+    </p>
+
+    <button id="enableBtn" class="btn">🎙️ Allow Microphone Access</button>
+
+    <div id="statusBox" class="status-box"></div>
+
+    <div class="tip">
+      Permission is permanently stored for HaniShot once allowed.
+    </div>
+  </div>
+
+  <script src="request-mic.js"></script>
+</body>
+</html>

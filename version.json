@@ -1,7 +1,7 @@
 {
-  "version": "1.0.2",
+  "version": "1.0.3",
   "releaseDate": "2026-11-02",
-  "changelog": "v1.0.2: Screenshot first tab order, video recording and download fixes, transparent crop mask overlay, NWD credits and donation links.",
+  "changelog": "v1.0.3: Dedicated microphone permission workflow for Chromium/Brave, Web Audio mixing resume fix, and permission manager in Settings.",
   "repoUrl": "https://github.com/novosadskigari/HaniShot",
-  "downloadUrl": "https://github.com/novosadskigari/HaniShot/archive/refs/tags/v1.0.2.zip"
+  "downloadUrl": "https://github.com/novosadskigari/HaniShot/archive/refs/tags/v1.0.3.zip"
 }

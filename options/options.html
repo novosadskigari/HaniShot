@@ -147,6 +147,14 @@
               <span class="slider round"></span>
             </label>
           </div>
+
+          <div class="form-group toggle-group" style="margin-top: 14px; padding-top: 14px; border-top: 1px solid #2d3748;">
+            <div>
+              <label class="form-label">Microphone Browser Permission</label>
+              <div class="form-subtext" id="micPermStatusText">Checking browser permission...</div>
+            </div>
+            <button type="button" id="grantMicOptionBtn" class="btn btn-secondary" style="font-size: 12px; padding: 6px 14px; min-width: 140px;">🎙️ Grant Permission</button>
+          </div>
         </div>
       </section>
 
@@ -243,7 +251,7 @@
 
           <div class="storage-info-box">
             <div class="storage-stats">
-              <div><strong>Installed Version:</strong> <span id="currentVersionDisplay">v1.0.2</span> <button type="button" id="reloadExtensionBtn" class="btn btn-secondary" style="font-size: 11px; padding: 2px 8px; margin-left: 8px;" title="Reload extension from disk">🔄 Reload</button></div>
+              <div><strong>Installed Version:</strong> <span id="currentVersionDisplay">v1.0.3</span> <button type="button" id="reloadExtensionBtn" class="btn btn-secondary" style="font-size: 11px; padding: 2px 8px; margin-left: 8px;" title="Reload extension from disk">🔄 Reload</button></div>
               <div class="sub-stats" id="updateStatusText">Automatic background checks enabled via GitHub.</div>
             </div>
             <div class="storage-actions">

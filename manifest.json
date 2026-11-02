@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "HaniShot - Screen Recorder & Screenshot",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Unlimited screen & tab video recording with customizable auto-split length, full-page screenshots, and 100% local storage.",
   "icons": {
     "16": "icons/icon-16.png",

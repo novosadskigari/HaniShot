@@ -19,6 +19,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   await loadSettings();
   await refreshStorageStats();
   await initUpdateSection();
+  await initMicPermission();
   setupEventListeners();
 });
 
@@ -234,4 +235,47 @@ function showStatus(msg) {
 async function refreshStorageStats() {
   const stats = await getStorageUsage();
   document.getElementById('storageUsed').textContent = `${stats.usageMB} MB`;
+}
+
+async function initMicPermission() {
+  const statusEl = document.getElementById('micPermStatusText');
+  const grantBtn = document.getElementById('grantMicOptionBtn');
+  if (!statusEl || !grantBtn) return;
+
+  async function updateStatus() {
+    try {
+      if (navigator.permissions && navigator.permissions.query) {
+        const perm = await navigator.permissions.query({ name: 'microphone' });
+        if (perm.state === 'granted') {
+          statusEl.innerHTML = '<span style="color: #48bb78; font-weight: 600;">✅ Granted</span> - Microphone is ready for recordings.';
+          grantBtn.style.display = 'none';
+          return true;
+        } else if (perm.state === 'denied') {
+          statusEl.innerHTML = '<span style="color: #f56565; font-weight: 600;">❌ Blocked</span> - Blocked in browser settings. Click lock icon in address bar to unblock.';
+          grantBtn.style.display = 'none';
+          return false;
+        }
+      }
+    } catch (_) {}
+    statusEl.innerHTML = '<span style="color: #ecc94b; font-weight: 600;">⚠️ Not Granted</span> - Permission required to record audio.';
+    grantBtn.style.display = 'inline-block';
+    return false;
+  }
+
+  grantBtn.addEventListener('click', async () => {
+    grantBtn.disabled = true;
+    grantBtn.textContent = 'Requesting...';
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      stream.getTracks().forEach(t => t.stop());
+      await updateStatus();
+    } catch (err) {
+      grantBtn.disabled = false;
+      grantBtn.textContent = '🎙️ Grant Permission';
+      alert('Microphone permission request failed: ' + err.message);
+      await updateStatus();
+    }
+  });
+
+  await updateStatus();
 }

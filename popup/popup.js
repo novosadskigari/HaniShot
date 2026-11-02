@@ -95,14 +95,23 @@ function setupUIEvents() {
     });
   });
 
-  // Mic toggle permission priming
+  async function checkMicPermissionGranted() {
+    try {
+      if (navigator.permissions && navigator.permissions.query) {
+        const perm = await navigator.permissions.query({ name: 'microphone' });
+        return perm.state === 'granted';
+      }
+    } catch (_) {}
+    return false;
+  }
+
+  // Mic toggle permission check
   document.getElementById('micToggle').addEventListener('change', async (e) => {
     if (e.target.checked) {
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        stream.getTracks().forEach(t => t.stop());
-      } catch (err) {
-        console.warn('Microphone permission request failed on toggle:', err);
+      const isGranted = await checkMicPermissionGranted();
+      if (!isGranted) {
+        chrome.tabs.create({ url: chrome.runtime.getURL('request-mic.html') });
+        window.close();
       }
     }
   });
@@ -115,24 +124,19 @@ function setupUIEvents() {
     const countdown = parseInt(document.getElementById('quickCountdown').value, 10);
 
     const startBtn = document.getElementById('startRecordBtn');
-    startBtn.disabled = true;
-    startBtn.textContent = 'Initializing...';
 
-    // Prime microphone permission from visible user gesture in popup context
+    // Verify microphone permission from full tab origin before initiating
     if (includeMic) {
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        stream.getTracks().forEach(t => t.stop());
-      } catch (micErr) {
-        console.warn('Microphone permission error in popup:', micErr);
-        if (micErr.name === 'NotAllowedError' || micErr.name === 'PermissionDeniedError') {
-          startBtn.disabled = false;
-          startBtn.innerHTML = '<span class="record-dot"></span> Start Recording';
-          alert('Microphone access was denied. Please allow microphone permission in Chrome for HaniShot to record audio.');
-          return;
-        }
+      const isGranted = await checkMicPermissionGranted();
+      if (!isGranted) {
+        chrome.tabs.create({ url: chrome.runtime.getURL('request-mic.html') });
+        window.close();
+        return;
       }
     }
+
+    startBtn.disabled = true;
+    startBtn.textContent = 'Initializing...';
 
     const config = {
       recordType: selectedType,

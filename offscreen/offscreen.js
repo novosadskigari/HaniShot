@@ -144,7 +144,7 @@ async function startRecording(config) {
         video: false
       });
     } catch (e) {
-      console.warn('Microphone capture failed, proceeding with screen audio only', e);
+      console.warn('Microphone capture failed, proceeding with screen audio only:', e.name, e.message);
     }
   }
 
@@ -154,6 +154,11 @@ async function startRecording(config) {
 
   if (sysAudioTracks.length > 0 && micAudioTracks.length > 0) {
     audioContext = new AudioContext();
+    if (audioContext.state === 'suspended') {
+      try {
+        await audioContext.resume();
+      } catch (_) {}
+    }
     const mixedDest = audioContext.createMediaStreamDestination();
 
     const sysSource = audioContext.createMediaStreamSource(new MediaStream([sysAudioTracks[0]]));
