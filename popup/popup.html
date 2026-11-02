@@ -28,19 +28,48 @@
           <span id="updateDesc">Run <code>git pull</code> to update.</span>
         </div>
       </div>
-      <a href="https://github.com/niceworkdone/HaniShot" target="_blank" class="update-link-btn">View</a>
+      <a href="https://github.com/novosadskigari/HaniShot" target="_blank" class="update-link-btn">View</a>
     </div>
 
     <!-- Normal View (When not recording) -->
     <div id="idleView">
       <!-- Nav Tabs -->
       <nav class="nav-tabs">
-        <button type="button" class="tab-btn active" id="tabBtnRecord">🎥 Record Video</button>
-        <button type="button" class="tab-btn" id="tabBtnCapture">📸 Screenshot</button>
+        <button type="button" class="tab-btn active" id="tabBtnCapture">📸 Screenshot</button>
+        <button type="button" class="tab-btn" id="tabBtnRecord">🎥 Record Video</button>
       </nav>
 
+      <!-- Panel: Screenshot -->
+      <section class="panel active" id="panelCapture">
+        <div class="capture-actions">
+          <button type="button" class="capture-card-btn" id="btnCaptureVisible">
+            <span class="c-icon">👁️</span>
+            <div class="c-info">
+              <strong>Visible Part</strong>
+              <span>Capture what you see right now</span>
+            </div>
+          </button>
+
+          <button type="button" class="capture-card-btn" id="btnCaptureArea">
+            <span class="c-icon">✂️</span>
+            <div class="c-info">
+              <strong>Selected Area</strong>
+              <span>Click and drag to select any region</span>
+            </div>
+          </button>
+
+          <button type="button" class="capture-card-btn" id="btnCaptureFull">
+            <span class="c-icon">📜</span>
+            <div class="c-info">
+              <strong>Full Page</strong>
+              <span>Scroll and capture entire web page</span>
+            </div>
+          </button>
+        </div>
+      </section>
+
       <!-- Panel: Record Video -->
-      <section class="panel active" id="panelRecord">
+      <section class="panel" id="panelRecord">
         <div class="record-type-grid">
           <label class="type-card active">
             <input type="radio" name="recordType" value="desktop" checked>
@@ -108,35 +137,6 @@
           Start Recording
         </button>
       </section>
-
-      <!-- Panel: Screenshot -->
-      <section class="panel" id="panelCapture">
-        <div class="capture-actions">
-          <button type="button" class="capture-card-btn" id="btnCaptureVisible">
-            <span class="c-icon">👁️</span>
-            <div class="c-info">
-              <strong>Visible Part</strong>
-              <span>Capture what you see right now</span>
-            </div>
-          </button>
-
-          <button type="button" class="capture-card-btn" id="btnCaptureArea">
-            <span class="c-icon">✂️</span>
-            <div class="c-info">
-              <strong>Selected Area</strong>
-              <span>Click and drag to select any region</span>
-            </div>
-          </button>
-
-          <button type="button" class="capture-card-btn" id="btnCaptureFull">
-            <span class="c-icon">📜</span>
-            <div class="c-info">
-              <strong>Full Page</strong>
-              <span>Scroll and capture entire web page</span>
-            </div>
-          </button>
-        </div>
-      </section>
     </div>
 
     <!-- Active Recording View -->
@@ -173,7 +173,7 @@
         <span class="footer-text">100% Local • Zero Limits</span>
       </div>
       <div class="footer-bottom">
-        <span>Developed with ❤️ by <a href="https://niceworkdone.com" target="_blank" rel="noopener noreferrer" class="nwd-link">NWD</a></span>
+        <span>Developed with ❤️ • <a href="https://github.com/novosadskigari/HaniShot" target="_blank" rel="noopener noreferrer" class="nwd-link">GitHub: novosadskigari/HaniShot</a></span>
       </div>
     </footer>
   </div>

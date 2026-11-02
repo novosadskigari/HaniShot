@@ -40,7 +40,7 @@
 
 1. Open your terminal and clone the repository:
    ```bash
-   git clone https://github.com/niceworkdone/HaniShot.git
+   git clone https://github.com/novosadskigari/HaniShot.git
    ```
 2. Open your Chromium-based browser (Google Chrome, Brave, Microsoft Edge, Opera, or Vivaldi) and navigate to:
    ```
@@ -55,7 +55,7 @@
 
 ### Method 2: Download ZIP
 
-1. Click **Code** -> **Download ZIP** on GitHub (or download from [Releases](https://github.com/niceworkdone/HaniShot/releases)).
+1. Click **Code** -> **Download ZIP** on GitHub (or download from [Releases](https://github.com/novosadskigari/HaniShot/releases)).
 2. Extract the downloaded ZIP archive on your computer.
 3. Open `chrome://extensions` in your browser.
 4. Enable **Developer mode** (top-right toggle).
@@ -154,4 +154,4 @@ This project is licensed under the [MIT License](LICENSE). Free for personal and
 
 ## 👨‍💻 Credits & Author
 
-Developed with ❤️ by **[NWD](https://niceworkdone.com)**
+Developed with ❤️ • GitHub repository: **[https://github.com/novosadskigari/HaniShot](https://github.com/novosadskigari/HaniShot)**

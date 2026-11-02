@@ -11,7 +11,8 @@ const DEFAULT_SETTINGS = {
   defaultSystemAudio: true,
   screenshotFormat: 'png',
   autoOpenEditor: 'editor',
-  autoDownloadVideo: true
+  autoDownloadVideo: true,
+  autoUpdateEnabled: false
 };
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -61,6 +62,7 @@ async function loadSettings() {
   document.getElementById('screenshotFormat').value = settings.screenshotFormat;
   document.getElementById('autoOpenEditor').value = settings.autoOpenEditor;
   document.getElementById('autoDownloadVideo').checked = settings.autoDownloadVideo;
+  document.getElementById('autoUpdateEnabled').checked = !!settings.autoUpdateEnabled;
 
   toggleSplitInputs(settings.enableSplit);
   updateActivePreset(settings.splitDurationMinutes);
@@ -119,7 +121,8 @@ function setupEventListeners() {
   const autoSaveInputs = [
     'videoResolution', 'videoFps', 'videoFormat',
     'countdownSeconds', 'defaultMic', 'defaultSystemAudio',
-    'screenshotFormat', 'autoOpenEditor', 'autoDownloadVideo'
+    'screenshotFormat', 'autoOpenEditor', 'autoDownloadVideo',
+    'autoUpdateEnabled'
   ];
 
   autoSaveInputs.forEach(id => {
@@ -179,7 +182,8 @@ async function getFormSettings() {
     defaultSystemAudio: document.getElementById('defaultSystemAudio').checked,
     screenshotFormat: document.getElementById('screenshotFormat').value,
     autoOpenEditor: document.getElementById('autoOpenEditor').value,
-    autoDownloadVideo: document.getElementById('autoDownloadVideo').checked
+    autoDownloadVideo: document.getElementById('autoDownloadVideo').checked,
+    autoUpdateEnabled: document.getElementById('autoUpdateEnabled').checked
   };
 }
 

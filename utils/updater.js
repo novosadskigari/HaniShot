@@ -3,8 +3,9 @@
  * Checks GitHub repository for new releases / version updates.
  */
 
-export const DEFAULT_REPO = 'niceworkdone/HaniShot';
-export const GITHUB_RAW_VERSION_URL = 'https://raw.githubusercontent.com/niceworkdone/HaniShot/main/version.json';
+export const DEFAULT_REPO = 'novosadskigari/HaniShot';
+export const GITHUB_REPO_URL = 'https://github.com/novosadskigari/HaniShot';
+export const GITHUB_RAW_VERSION_URL = 'https://raw.githubusercontent.com/novosadskigari/HaniShot/main/version.json';
 
 export function compareVersions(remote, local) {
   const parse = v => v.replace(/^v/, '').split('.').map(n => parseInt(n, 10) || 0);
@@ -44,8 +45,8 @@ export async function checkGitHubUpdate(isManual = false) {
       latestVersion: remoteVersion,
       releaseDate: data.releaseDate || '',
       changelog: data.changelog || '',
-      repoUrl: data.repoUrl || `https://github.com/${DEFAULT_REPO}`,
-      downloadUrl: data.downloadUrl || `https://github.com/${DEFAULTREPO}/archive/refs/heads/main.zip`,
+      repoUrl: data.repoUrl || GITHUB_REPO_URL,
+      downloadUrl: data.downloadUrl || `${GITHUB_REPO_URL}/archive/refs/heads/main.zip`,
       lastChecked: Date.now()
     };
 
@@ -58,6 +59,18 @@ export async function checkGitHubUpdate(isManual = false) {
       chrome.action.setTitle({
         title: `HaniShot: Update v${remoteVersion} available! Click to view.`
       });
+
+      // Show notification if auto update is not enabled
+      const settings = await chrome.storage.local.get({ autoUpdateEnabled: false });
+      if (!settings.autoUpdateEnabled && chrome.notifications) {
+        chrome.notifications.create('hanishot-github-update', {
+          type: 'basic',
+          iconUrl: chrome.runtime.getURL('icons/icon-128.png'),
+          title: 'HaniShot Update Available',
+          message: `Nova verzija v${remoteVersion} je dostupna! Kliknite za pregled na GitHub-u.`,
+          priority: 2
+        });
+      }
     } else {
       chrome.action.setBadgeText({ text: '' });
       chrome.action.setTitle({

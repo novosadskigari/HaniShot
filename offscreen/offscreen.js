@@ -236,7 +236,10 @@ function setupMediaRecorder(stream, mimeType) {
 }
 
 async function finalizeChunk(isFinal) {
-  if (recordedChunks.length === 0) return;
+  if (recordedChunks.length === 0) {
+    console.warn('finalizeChunk called with 0 chunks recorded');
+    return null;
+  }
 
   const mimeType = currentConfig.resolvedMimeType || 'video/webm';
   const blob = new Blob(recordedChunks, { type: mimeType });
@@ -268,7 +271,23 @@ async function finalizeChunk(isFinal) {
     console.error('Failed to save chunk to IndexedDB:', err);
   }
 
-  // Notify service worker to trigger download or UI update
+  // If autoDownloadVideo is enabled, trigger direct download from offscreen DOM context
+  if (currentConfig.autoDownloadVideo !== false && blob.size > 0) {
+    try {
+      const downloadUrl = URL.createObjectURL(blob);
+      chrome.downloads.download({
+        url: downloadUrl,
+        filename,
+        saveAs: false
+      }, (downloadId) => {
+        setTimeout(() => URL.revokeObjectURL(downloadUrl), 30000);
+      });
+    } catch (e) {
+      console.warn('Auto download from offscreen context failed:', e);
+    }
+  }
+
+  // Notify service worker that chunk is ready and persisted
   chrome.runtime.sendMessage({
     type: 'CHUNK_READY',
     data: {
@@ -277,9 +296,11 @@ async function finalizeChunk(isFinal) {
       size: blob.size,
       partIndex: currentPart,
       isFinal,
-      autoDownload: currentConfig.autoDownloadVideo !== false
+      autoDownload: false
     }
   });
+
+  return chunkId;
 }
 
 function scheduleAutoSplit() {

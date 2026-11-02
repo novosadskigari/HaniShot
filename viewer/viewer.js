@@ -27,8 +27,16 @@ async function loadTargetMedia() {
   const urlParams = new URLSearchParams(window.location.search);
   const mediaId = urlParams.get('id');
 
+  const loadingState = document.getElementById('loadingState');
+  const errorState = document.getElementById('errorState');
+
   if (mediaId) {
-    currentMediaItem = await getMediaItem(mediaId);
+    // Retry up to 6 times (1.5s total) in case DB transaction is flushing
+    for (let attempt = 0; attempt < 6; attempt++) {
+      currentMediaItem = await getMediaItem(mediaId);
+      if (currentMediaItem) break;
+      await new Promise(r => setTimeout(r, 250));
+    }
   }
 
   // Fallback: check pending capture from storage
@@ -42,8 +50,15 @@ async function loadTargetMedia() {
     }
   }
 
+  if (loadingState) {
+    loadingState.style.display = 'none';
+  }
+
   if (!currentMediaItem) {
     document.getElementById('fileNameDisplay').textContent = 'No media loaded';
+    if (errorState) {
+      errorState.style.display = 'block';
+    }
     return;
   }
 
@@ -63,15 +78,19 @@ function displayVideo(item) {
   document.getElementById('copyBtn').style.display = 'none';
 
   const video = document.getElementById('mainVideo');
-  const url = URL.createObjectURL(item.blob);
-  video.src = url;
+  if (item.blob) {
+    const url = URL.createObjectURL(item.blob);
+    video.src = url;
+  }
 
   document.getElementById('metaName').textContent = item.name;
   document.getElementById('metaSize').textContent = formatBytes(item.size);
 
-  document.getElementById('downloadBtn').addEventListener('click', () => {
+  const downloadBtn = document.getElementById('downloadBtn');
+  downloadBtn.textContent = '⬇️ Download Video';
+  downloadBtn.onclick = () => {
     downloadBlob(item.blob, item.name);
-  });
+  };
 }
 
 function displayImage(item) {
@@ -79,6 +98,11 @@ function displayImage(item) {
   document.getElementById('canvasWrapper').style.display = 'block';
   document.getElementById('videoWrapper').style.display = 'none';
   document.getElementById('copyBtn').style.display = 'inline-flex';
+
+  const downloadBtn = document.getElementById('downloadBtn');
+  downloadBtn.textContent = '⬇️ Download';
+  downloadBtn.onclick = downloadCanvas;
+  document.getElementById('copyBtn').onclick = copyCanvasToClipboard;
 
   baseImage = new Image();
   baseImage.onload = () => {
@@ -93,9 +117,6 @@ function displayImage(item) {
   } else if (item.blob) {
     baseImage.src = URL.createObjectURL(item.blob);
   }
-
-  document.getElementById('downloadBtn').addEventListener('click', downloadCanvas);
-  document.getElementById('copyBtn').addEventListener('click', copyCanvasToClipboard);
 }
 
 function setupToolbar() {
@@ -299,16 +320,30 @@ function downloadCanvas() {
 }
 
 function downloadBlob(blob, filename) {
+  if (!blob) {
+    alert('No media data to download.');
+    return;
+  }
   const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = filename;
-  document.body.appendChild(a);
-  a.click();
-  setTimeout(() => {
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-  }, 100);
+  if (chrome.downloads && chrome.downloads.download) {
+    chrome.downloads.download({
+      url,
+      filename: filename || 'HaniShot_media',
+      saveAs: true
+    }, () => {
+      setTimeout(() => URL.revokeObjectURL(url), 30000);
+    });
+  } else {
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename || 'HaniShot_media';
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(() => {
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }, 2000);
+  }
 }
 
 function formatBytes(bytes) {
