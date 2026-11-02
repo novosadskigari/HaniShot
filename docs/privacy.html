@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Policy — HaniShot Screen Recorder & Screenshot</title>
+  <meta name="description" content="Privacy Policy for HaniShot. 100% on-device processing and zero data collection.">
+  <link rel="icon" type="image/png" href="images/icon-32.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #0b0f19;
+      --card-bg: #151d30;
+      --card-border: #23314e;
+      --accent: #f59e0b;
+      --cyan: #38bdf8;
+      --green: #34d399;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      line-height: 1.7;
+    }
+
+    .navbar {
+      width: 100%;
+      background: rgba(11, 15, 25, 0.9);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .nav-container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--text);
+    }
+
+    .brand img { width: 32px; height: 32px; }
+    .brand-name { font-size: 18px; font-weight: 800; }
+
+    .nav-back {
+      color: var(--cyan);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .content-wrapper {
+      max-width: 900px;
+      margin: 40px auto 80px;
+      padding: 0 24px;
+    }
+
+    .privacy-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 48px;
+    }
+
+    h1 {
+      font-size: 32px;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    .last-updated {
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 32px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    h2 {
+      font-size: 20px;
+      font-weight: 700;
+      margin: 32px 0 12px;
+      color: #ffffff;
+      border-bottom: 1px solid var(--card-border);
+      padding-bottom: 8px;
+    }
+
+    p {
+      color: var(--text-muted);
+      margin-bottom: 16px;
+      font-size: 15px;
+    }
+
+    ul {
+      margin: 0 0 24px 20px;
+      color: var(--text-muted);
+    }
+
+    li {
+      margin-bottom: 8px;
+      font-size: 15px;
+    }
+
+    li strong {
+      color: var(--text);
+    }
+
+    .callout {
+      background: rgba(16, 185, 129, 0.1);
+      border-left: 4px solid var(--green);
+      padding: 16px 20px;
+      border-radius: 0 8px 8px 0;
+      margin: 24px 0;
+    }
+
+    .callout p {
+      color: #a7f3d0;
+      margin: 0;
+      font-weight: 500;
+    }
+
+    footer {
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 40px 24px;
+      text-align: center;
+      color: #64748b;
+      font-size: 13px;
+    }
+
+    @media (max-width: 600px) {
+      .privacy-card { padding: 24px; }
+      h1 { font-size: 24px; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="brand">
+        <img src="images/icon-48.png" alt="HaniShot">
+        <span class="brand-name">HaniShot</span>
+      </a>
+      <a href="index.html" class="nav-back">← Back to Homepage</a>
+    </div>
+  </nav>
+
+  <main class="content-wrapper">
+    <article class="privacy-card">
+      <h1>Privacy Policy for HaniShot</h1>
+      <div class="last-updated">Last Updated: November 2, 2026</div>
+
+      <div class="callout">
+        <p><strong>100% On-Device Guarantee:</strong> HaniShot does not collect, transmit, store on cloud servers, or sell any personal data or browsing activity. All media remains on your computer.</p>
+      </div>
+
+      <h2>1. Local Processing & Zero Data Collection</h2>
+      <p>HaniShot is engineered with a strict privacy-first architecture:</p>
+      <ul>
+        <li><strong>No Analytics or Telemetry:</strong> The extension contains zero tracking code, zero analytics SDKs (such as Google Analytics or Mixpanel), and zero marketing beacons.</li>
+        <li><strong>Local IndexedDB Storage:</strong> All video files, screenshots, and custom preferences are stored entirely in your local browser sandbox through the HTML5 IndexedDB API.</li>
+        <li><strong>No External Server Communication:</strong> HaniShot makes no background network requests to third-party endpoints or developer servers.</li>
+      </ul>
+
+      <h2>2. Browser Permissions & Purpose</h2>
+      <p>HaniShot requests only the permissions strictly required to perform local screen recording and screenshot tasks:</p>
+      <ul>
+        <li><strong>activeTab & scripting:</strong> Used solely to capture screenshots of the current web page (visible, crop area, or scrolling full-page) when triggered by the user.</li>
+        <li><strong>tabCapture & offscreen:</strong> Used to stream video and audio from selected browser tabs and record them using the MediaRecorder API.</li>
+        <li><strong>downloads:</strong> Allows direct saving of exported video files and screenshots to your Downloads directory.</li>
+        <li><strong>storage & unlimitedStorage:</strong> Stores your local configuration (auto-split duration, default countdown) and allows high-definition video chunks to be saved locally without hitting browser quota errors.</li>
+        <li><strong>notifications:</strong> Displays notifications when an auto-split video chunk is completed or when an optional update is available.</li>
+        <li><strong>contextMenus:</strong> Provides quick right-click capture shortcuts.</li>
+        <li><strong>alarms:</strong> Powers internal recording duration timers.</li>
+      </ul>
+
+      <h2>3. Third-Party Sharing</h2>
+      <p>We do NOT share, sell, rent, or trade your personal data or captured content with any third party under any circumstances.</p>
+
+      <h2>4. User Control & Data Deletion</h2>
+      <p>You have full autonomy over all captured media:</p>
+      <ul>
+        <li>You can view and preview all recordings anytime in the HaniShot Gallery.</li>
+        <li>You can clear all local storage cache at any time from the Options / Settings page.</li>
+        <li>Uninstalling HaniShot immediately deletes all extension databases and stored items from your browser.</li>
+      </ul>
+
+      <h2>5. Open Source Transparency & Contact</h2>
+      <p>HaniShot is free, open source software. You can inspect the entire codebase, report issues, or contribute at:</p>
+      <p><a href="https://github.com/novosadskigari/HaniShot" target="_blank" style="color: var(--cyan);">https://github.com/novosadskigari/HaniShot</a></p>
+    </article>
+  </main>
+
+  <footer>
+    <p>Developed with ❤️ by <a href="https://github.com/novosadskigari/HaniShot" target="_blank" style="color: var(--cyan); text-decoration: none;">NWD</a> • MIT License</p>
+  </footer>
+</body>
+</html>

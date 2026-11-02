@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HaniShot — Unlimited Screen Recorder & Screenshot Chrome Extension</title>
+  <meta name="description" content="Unlimited screen & tab video recording with customizable auto-split length, full-page screenshots, and 100% local storage.">
+  <link rel="icon" type="image/png" href="images/icon-32.png">
+
+  <!-- OpenGraph Metadata -->
+  <meta property="og:title" content="HaniShot — Unlimited Screen Recorder & Screenshot">
+  <meta property="og:description" content="Capture screen & tab video with dual-audio and smart auto-split. 100% private, on-device storage.">
+  <meta property="og:image" content="images/screenshot-1.png">
+  <meta property="og:type" content="website">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #0b0f19;
+      --card-bg: #151d30;
+      --card-border: #23314e;
+      --accent: #f59e0b;
+      --accent-hover: #fbbf24;
+      --cyan: #38bdf8;
+      --green: #34d399;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* Ambient Glow Orbs */
+    .glow-orb-top {
+      position: absolute;
+      top: -100px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: clamp(300px, 80vw, 900px);
+      height: 450px;
+      background: radial-gradient(circle, rgba(245, 158, 11, 0.15) 0%, rgba(56, 189, 248, 0.08) 50%, transparent 70%);
+      filter: blur(80px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Navigation */
+    .navbar {
+      position: sticky;
+      top: 0;
+      width: 100%;
+      background: rgba(11, 15, 25, 0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      z-index: 100;
+    }
+
+    .nav-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--text);
+    }
+
+    .brand img {
+      width: 36px;
+      height: 36px;
+    }
+
+    .brand-name {
+      font-size: 20px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-tag {
+      font-size: 11px;
+      font-weight: 700;
+      background: rgba(245, 158, 11, 0.18);
+      color: var(--accent);
+      padding: 2px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(245, 158, 11, 0.35);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+      transition: color 0.2s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+    }
+
+    .btn-nav {
+      background: linear-gradient(135deg, var(--accent), #d97706);
+      color: #111827;
+      font-weight: 700;
+      font-size: 14px;
+      padding: 9px 18px;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+    }
+
+    .btn-nav:hover {
+      background: linear-gradient(135deg, var(--accent-hover), var(--accent));
+      transform: translateY(-1px);
+    }
+
+    /* Hero Section */
+    .hero {
+      position: relative;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 70px 24px 40px;
+      text-align: center;
+      z-index: 1;
+    }
+
+    .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      background: rgba(245, 158, 11, 0.12);
+      border: 1px solid rgba(245, 158, 11, 0.35);
+      border-radius: 999px;
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 24px;
+    }
+
+    .hero-title {
+      font-size: clamp(2.2rem, 1.8rem + 3.2vw, 4rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      margin-bottom: 20px;
+    }
+
+    .hero-title .gradient-text {
+      background: linear-gradient(135deg, #ffffff 40%, var(--accent) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-desc {
+      font-size: clamp(1rem, 0.95rem + 0.5vw, 1.25rem);
+      color: var(--text-muted);
+      max-width: 760px;
+      margin: 0 auto 36px;
+    }
+
+    .cta-group {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 40px;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: linear-gradient(135deg, var(--accent), #d97706);
+      color: #0f172a;
+      font-size: 16px;
+      font-weight: 800;
+      padding: 14px 28px;
+      border-radius: 10px;
+      text-decoration: none;
+      box-shadow: 0 8px 24px rgba(245, 158, 11, 0.35);
+      transition: all 0.2s ease;
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(135deg, var(--accent-hover), var(--accent));
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px rgba(245, 158, 11, 0.45);
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: var(--text);
+      font-size: 16px;
+      font-weight: 700;
+      padding: 14px 24px;
+      border-radius: 10px;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .trust-badges {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 28px;
+      flex-wrap: wrap;
+      color: var(--text-muted);
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .trust-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .trust-item span.icon {
+      color: var(--green);
+    }
+
+    /* Showcase Carousel */
+    .showcase-section {
+      max-width: 1200px;
+      margin: 40px auto 80px;
+      padding: 0 24px;
+      text-align: center;
+    }
+
+    .showcase-frame {
+      background: #111827;
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: 0 30px 80px -20px rgba(0, 0, 0, 0.8);
+      overflow: hidden;
+      margin-top: 24px;
+      position: relative;
+    }
+
+    .showcase-frame img {
+      width: 100%;
+      height: auto;
+      aspect-ratio: 16 / 10;
+      display: block;
+      object-fit: cover;
+    }
+
+    .tab-pills {
+      display: inline-flex;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 6px;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .tab-pill {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 14px;
+      font-weight: 700;
+      padding: 8px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .tab-pill.active {
+      background: #0f172a;
+      color: var(--text);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--card-border);
+    }
+
+    /* Features Grid */
+    .features-section {
+      max-width: 1200px;
+      margin: 80px auto;
+      padding: 0 24px;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 54px;
+    }
+
+    .section-subtitle {
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 8px;
+    }
+
+    .section-title {
+      font-size: clamp(1.8rem, 1.5rem + 1.5vw, 2.8rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 24px;
+    }
+
+    .feature-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 32px 28px;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(245, 158, 11, 0.4);
+    }
+
+    .feature-icon {
+      width: 52px;
+      height: 52px;
+      background: rgba(245, 158, 11, 0.12);
+      border: 1px solid rgba(245, 158, 11, 0.25);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+
+    .feature-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: var(--text);
+    }
+
+    .feature-desc {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* Comparison Table */
+    .comparison-section {
+      max-width: 960px;
+      margin: 80px auto;
+      padding: 0 24px;
+    }
+
+    .table-container {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      overflow: hidden;
+      margin-top: 32px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+
+    th, td {
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--card-border);
+      font-size: 14px;
+    }
+
+    th {
+      background: #0f172a;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    td.highlight {
+      background: rgba(245, 158, 11, 0.05);
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    /* Privacy Banner */
+    .privacy-banner {
+      max-width: 1200px;
+      margin: 60px auto;
+      padding: 0 24px;
+    }
+
+    .banner-inner {
+      background: linear-gradient(135deg, #132337 0%, #171f30 100%);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      border-radius: 20px;
+      padding: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 32px;
+      flex-wrap: wrap;
+    }
+
+    .banner-content h3 {
+      font-size: 24px;
+      font-weight: 800;
+      margin-bottom: 10px;
+      color: #ffffff;
+    }
+
+    .banner-content p {
+      font-size: 15px;
+      color: var(--text-muted);
+      max-width: 650px;
+    }
+
+    /* Footer */
+    footer {
+      background: #070a12;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 60px 24px 40px;
+      margin-top: 80px;
+    }
+
+    .footer-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 20px;
+    }
+
+    .donate-links {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin: 12px 0;
+    }
+
+    .donate-pill {
+      background: #1e293b;
+      border: 1px solid #334155;
+      color: #e2e8f0;
+      padding: 8px 16px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .donate-pill:hover {
+      background: #334155;
+      border-color: var(--accent);
+      color: #ffffff;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+      list-style: none;
+    }
+
+    .footer-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .footer-links a:hover {
+      color: var(--text);
+    }
+
+    .copyright {
+      color: #64748b;
+      font-size: 13px;
+      margin-top: 8px;
+    }
+
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .table-container { overflow-x: auto; }
+    }
+  </style>
+</head>
+<body>
+  <div class="glow-orb-top"></div>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="#" class="brand">
+        <img src="images/icon-48.png" alt="HaniShot">
+        <span class="brand-name">HaniShot</span>
+        <span class="brand-tag">v1.0.3</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#features">Features</a></li>
+        <li><a href="#showcase">Showcase</a></li>
+        <li><a href="#comparison">Why HaniShot</a></li>
+        <li><a href="privacy.html">Privacy Policy</a></li>
+        <li><a href="https://github.com/novosadskigari/HaniShot" target="_blank">GitHub</a></li>
+      </ul>
+      <a href="https://github.com/novosadskigari/HaniShot" target="_blank" class="btn-nav">Add to Chrome</a>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <header class="hero">
+    <div class="badge-pill">
+      <span>🍯</span>
+      <span>100% Free & Open Source Chrome Extension</span>
+    </div>
+    <h1 class="hero-title">
+      Unlimited Screen Recording & Screenshots.<br>
+      <span class="gradient-text">100% On-Device Privacy.</span>
+    </h1>
+    <p class="hero-desc">
+      Record desktop and tab videos with crystal-clear microphone audio and smart auto-split protection. Take precision screenshots with focus masking and annotation editing — zero cloud uploads.
+    </p>
+    <div class="cta-group">
+      <a href="https://github.com/novosadskigari/HaniShot" target="_blank" class="btn-primary">
+        <span>⚡</span> Install on Chrome / Brave
+      </a>
+      <a href="https://github.com/novosadskigari/HaniShot" target="_blank" class="btn-secondary">
+        <span>⭐</span> Star on GitHub
+      </a>
+    </div>
+    <div class="trust-badges">
+      <div class="trust-item"><span class="icon">✓</span> 100% Local Storage (IndexedDB)</div>
+      <div class="trust-item"><span class="icon">✓</span> Zero Time Limits or Paywalls</div>
+      <div class="trust-item"><span class="icon">✓</span> No Account or Sign-up Needed</div>
+      <div class="trust-item"><span class="icon">✓</span> Dual-Channel Microphone Mixing</div>
+    </div>
+  </header>
+
+  <!-- Showcase Section -->
+  <section class="showcase-section" id="showcase">
+    <div class="tab-pills">
+      <button class="tab-pill active" onclick="switchScreenshot(1, this)">📸 Screenshot Capture</button>
+      <button class="tab-pill" onclick="switchScreenshot(2, this)">🎥 Video & Auto-Split</button>
+      <button class="tab-pill" onclick="switchScreenshot(3, this)">💾 Local Media Gallery</button>
+    </div>
+
+    <div class="showcase-frame">
+      <img id="showcaseImg" src="images/screenshot-1.png" alt="HaniShot Interface" width="1280" height="800">
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features-section" id="features">
+    <div class="section-header">
+      <div class="section-subtitle">Features</div>
+      <h2 class="section-title">Everything You Need for Screen Recording</h2>
+    </div>
+
+    <div class="features-grid">
+      <!-- Feature 1 -->
+      <div class="feature-card">
+        <div class="feature-icon">✂️</div>
+        <h3 class="feature-title">Smart Video Auto-Split</h3>
+        <p class="feature-desc">
+          Long recording sessions are automatically chunked into ready-to-play numbered parts (e.g. every 10, 30, or 60 min). Never lose a recording due to browser memory exhaustion.
+        </p>
+      </div>
+
+      <!-- Feature 2 -->
+      <div class="feature-card">
+        <div class="feature-icon">🎙️</div>
+        <h3 class="feature-title">Dual-Channel Audio Mixing</h3>
+        <p class="feature-desc">
+          Record computer audio and microphone commentary simultaneously. Web Audio mixer synchronizes streams in real time with high-quality Opus encoding.
+        </p>
+      </div>
+
+      <!-- Feature 3 -->
+      <div class="feature-card">
+        <div class="feature-icon">📸</div>
+        <h3 class="feature-title">3 Screenshot Modes</h3>
+        <p class="feature-desc">
+          Capture your visible viewport, drag a transparent focus crop overlay, or perform automated scrolling full-page captures with pixel-perfect stitching.
+        </p>
+      </div>
+
+      <!-- Feature 4 -->
+      <div class="feature-card">
+        <div class="feature-icon">🎨</div>
+        <h3 class="feature-title">Annotation & Image Editor</h3>
+        <p class="feature-desc">
+          Crop, draw arrows, add rectangles, highlight, and write text over captured images immediately before saving to disk or copying to clipboard.
+        </p>
+      </div>
+
+      <!-- Feature 5 -->
+      <div class="feature-card">
+        <div class="feature-icon">🔒</div>
+        <h3 class="feature-title">100% Private & Local</h3>
+        <p class="feature-desc">
+          Zero data leaves your browser. All videos and screenshots are stored directly inside IndexedDB on your machine. No accounts, no servers, zero telemetry.
+        </p>
+      </div>
+
+      <!-- Feature 6 -->
+      <div class="feature-card">
+        <div class="feature-icon">📁</div>
+        <h3 class="feature-title">Built-In Media Gallery</h3>
+        <p class="feature-desc">
+          Browse, filter, preview, and download your past video segments and screenshots at any time from an on-device gallery interface.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Comparison Section -->
+  <section class="comparison-section" id="comparison">
+    <div class="section-header">
+      <div class="section-subtitle">Comparison</div>
+      <h2 class="section-title">How HaniShot Compares</h2>
+    </div>
+
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Feature</th>
+            <th>HaniShot</th>
+            <th>Loom / Commercial Tools</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Recording Duration</strong></td>
+            <td class="highlight">Unlimited (Local Auto-Split)</td>
+            <td>5 Minutes (Free Tier Trap)</td>
+          </tr>
+          <tr>
+            <td><strong>Data Privacy</strong></td>
+            <td class="highlight">100% On-Device (Zero Cloud)</td>
+            <td>Uploaded to Third-Party Servers</td>
+          </tr>
+          <tr>
+            <td><strong>Account Required</strong></td>
+            <td class="highlight">No Signup Needed</td>
+            <td>Mandatory Registration & Tracking</td>
+          </tr>
+          <tr>
+            <td><strong>Pricing</strong></td>
+            <td class="highlight">100% Free & Open Source</td>
+            <td>$12.50 – $20 / month</td>
+          </tr>
+          <tr>
+            <td><strong>Microphone + System Audio</strong></td>
+            <td class="highlight">Yes (Dual-channel Web Audio)</td>
+            <td>Yes</td>
+          </tr>
+          <tr>
+            <td><strong>Full Page Screenshots</strong></td>
+            <td class="highlight">Included Free</td>
+            <td>Often Paid Feature</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Privacy Banner -->
+  <section class="privacy-banner">
+    <div class="banner-inner">
+      <div class="banner-content">
+        <h3>Privacy First by Design</h3>
+        <p>
+          HaniShot operates under a strict Zero-Telemetry policy. No analytics, no cookies, no cloud syncing. All media is encoded and kept entirely on your device.
+        </p>
+      </div>
+      <a href="privacy.html" class="btn-secondary">Read Full Privacy Policy ➔</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-container">
+      <div class="brand">
+        <img src="images/icon-48.png" alt="HaniShot">
+        <span class="brand-name">HaniShot</span>
+      </div>
+
+      <p class="copyright">Developed with ❤️ by <a href="https://github.com/novosadskigari/HaniShot" target="_blank" style="color: var(--cyan); text-decoration: none;">NWD</a></p>
+
+      <div class="donate-links">
+        <a href="https://coff.ee/damirbodor" target="_blank" class="donate-pill">🥃 Buy me a Jägermeister</a>
+        <a href="http://paypal.me/damirnwd" target="_blank" class="donate-pill">💰 Donate with PayPal</a>
+      </div>
+
+      <ul class="footer-links">
+        <li><a href="privacy.html">Privacy Policy</a></li>
+        <li><a href="https://github.com/novosadskigari/HaniShot" target="_blank">GitHub Repository</a></li>
+        <li><a href="https://github.com/novosadskigari/HaniShot/releases" target="_blank">Releases</a></li>
+        <li><a href="https://github.com/novosadskigari/HaniShot/blob/main/LICENSE" target="_blank">MIT License</a></li>
+      </ul>
+    </div>
+  </footer>
+
+  <script>
+    function switchScreenshot(num, btn) {
+      document.getElementById('showcaseImg').src = 'images/screenshot-' + num + '.png';
+      document.querySelectorAll('.tab-pill').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+    }
+  </script>
+</body>
+</html>

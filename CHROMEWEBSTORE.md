@@ -113,7 +113,7 @@ English
 ## Privacy Policy
 
 **Privacy Policy URL** [REQUIRED]
-https://github.com/novosadskigari/HaniShot/blob/main/PRIVACY.md
+https://novosadskigari.github.io/HaniShot/privacy.html
 
 ---
 
@@ -128,7 +128,7 @@ https://github.com/novosadskigari/HaniShot/blob/main/PRIVACY.md
 
 - **Publisher Name**: NWD (or your developer name)
 - **Support URL**: https://github.com/novosadskigari/HaniShot/issues
-- **Homepage URL**: https://github.com/novosadskigari/HaniShot
+- **Homepage URL**: https://novosadskigari.github.io/HaniShot/
 
 ---
 
