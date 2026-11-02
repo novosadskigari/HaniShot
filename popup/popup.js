@@ -95,6 +95,18 @@ function setupUIEvents() {
     });
   });
 
+  // Mic toggle permission priming
+  document.getElementById('micToggle').addEventListener('change', async (e) => {
+    if (e.target.checked) {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        stream.getTracks().forEach(t => t.stop());
+      } catch (err) {
+        console.warn('Microphone permission request failed on toggle:', err);
+      }
+    }
+  });
+
   // Start Recording
   document.getElementById('startRecordBtn').addEventListener('click', async () => {
     const selectedType = document.querySelector('input[name="recordType"]:checked').value;
@@ -102,16 +114,32 @@ function setupUIEvents() {
     const includeSystemAudio = document.getElementById('sysAudioToggle').checked;
     const countdown = parseInt(document.getElementById('quickCountdown').value, 10);
 
+    const startBtn = document.getElementById('startRecordBtn');
+    startBtn.disabled = true;
+    startBtn.textContent = 'Initializing...';
+
+    // Prime microphone permission from visible user gesture in popup context
+    if (includeMic) {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        stream.getTracks().forEach(t => t.stop());
+      } catch (micErr) {
+        console.warn('Microphone permission error in popup:', micErr);
+        if (micErr.name === 'NotAllowedError' || micErr.name === 'PermissionDeniedError') {
+          startBtn.disabled = false;
+          startBtn.innerHTML = '<span class="record-dot"></span> Start Recording';
+          alert('Microphone access was denied. Please allow microphone permission in Chrome for HaniShot to record audio.');
+          return;
+        }
+      }
+    }
+
     const config = {
       recordType: selectedType,
       includeMic,
       includeSystemAudio,
       countdown
     };
-
-    const startBtn = document.getElementById('startRecordBtn');
-    startBtn.disabled = true;
-    startBtn.textContent = 'Initializing...';
 
     chrome.runtime.sendMessage({
       type: 'INITIATE_RECORDING',

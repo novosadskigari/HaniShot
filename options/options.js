@@ -101,6 +101,20 @@ function setupEventListeners() {
     autoSave();
   });
 
+  const defaultMicInput = document.getElementById('defaultMic');
+  if (defaultMicInput) {
+    defaultMicInput.addEventListener('change', async (e) => {
+      if (e.target.checked) {
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+          stream.getTracks().forEach(t => t.stop());
+        } catch (err) {
+          console.warn('Microphone permission request failed in options:', err);
+        }
+      }
+    });
+  }
+
   splitInput.addEventListener('input', () => {
     const val = parseInt(splitInput.value, 10) || 30;
     updateActivePreset(val);

@@ -297,11 +297,28 @@ function handleRecordingStatusChange(data) {
     // Allow offscreen context sufficient time to flush IndexedDB writes and downloads
     setTimeout(() => {
       closeOffscreenDocument();
-    }, 2500);
+    }, 4000);
   }
 }
 
 async function handleChunkReady(chunkData) {
+  // If autoDownload is enabled and we have the blob URL from offscreen, trigger direct download
+  if (chunkData.autoDownload && chunkData.blobUrl) {
+    try {
+      chrome.downloads.download({
+        url: chunkData.blobUrl,
+        filename: chunkData.filename,
+        saveAs: false
+      }, (downloadId) => {
+        if (chrome.runtime.lastError) {
+          console.warn('Auto-download background notification:', chrome.runtime.lastError.message);
+        }
+      });
+    } catch (e) {
+      console.warn('Failed to start download in background:', e);
+    }
+  }
+
   // If this was the final chunk of recording session, open Viewer to preview and save
   if (chunkData.isFinal) {
     chrome.tabs.create({
