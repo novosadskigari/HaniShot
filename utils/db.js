@@ -31,10 +31,11 @@ export async function saveMediaItem(item) {
   return new Promise((resolve, reject) => {
     const tx = db.transaction(STORE_MEDIA, 'readwrite');
     const store = tx.objectStore(STORE_MEDIA);
-    const request = store.put(item);
+    store.put(item);
 
-    request.onsuccess = () => resolve(item);
-    request.onerror = () => reject(request.error);
+    tx.oncomplete = () => resolve(item);
+    tx.onerror = () => reject(tx.error);
+    tx.onabort = () => reject(tx.error || new Error('Transaction aborted'));
   });
 }
 

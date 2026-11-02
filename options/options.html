@@ -230,6 +230,17 @@
           </div>
         </div>
         <div class="card-body">
+          <div class="form-group toggle-group" style="margin-bottom: 16px;">
+            <div>
+              <label for="autoUpdateEnabled" class="form-label">Auto-Update Extension</label>
+              <div class="form-subtext">Automatically update extension when available. If turned off, you will receive a desktop notification when a new version is released.</div>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="autoUpdateEnabled">
+              <span class="slider round"></span>
+            </label>
+          </div>
+
           <div class="storage-info-box">
             <div class="storage-stats">
               <div><strong>Installed Version:</strong> <span id="currentVersionDisplay">v1.0.0</span></div>
@@ -237,7 +248,7 @@
             </div>
             <div class="storage-actions">
               <button type="button" id="checkUpdateBtn" class="btn btn-secondary">Check for Updates</button>
-              <a href="https://github.com/niceworkdone/HaniShot" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">GitHub Repository</a>
+              <a href="https://github.com/novosadskigari/HaniShot" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">GitHub Repository</a>
             </div>
           </div>
           <div id="updateAlertBox" class="update-alert-box" style="display: none;">
@@ -246,7 +257,7 @@
               <strong id="alertTitle">New Version Available!</strong>
               <p id="alertBody">Update via <code>git pull</code> in your cloned folder, then reload the extension in <code>chrome://extensions</code>.</p>
             </div>
-            <a id="alertLink" href="https://github.com/niceworkdone/HaniShot/releases" target="_blank" class="btn btn-primary">View Release</a>
+            <a id="alertLink" href="https://github.com/novosadskigari/HaniShot/releases" target="_blank" class="btn btn-primary">View Release</a>
           </div>
         </div>
       </section>
@@ -257,7 +268,7 @@
       </div>
 
       <footer class="options-footer">
-        <p>Developed with ❤️ by <a href="https://niceworkdone.com" target="_blank" rel="noopener noreferrer" class="nwd-link">NWD</a> (Nice Work Done)</p>
+        <p>Developed with ❤️ • <a href="https://github.com/novosadskigari/HaniShot" target="_blank" rel="noopener noreferrer" class="nwd-link">GitHub: github.com/novosadskigari/HaniShot</a></p>
       </footer>
     </main>
   </div>

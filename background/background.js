@@ -69,6 +69,31 @@ chrome.alarms.onAlarm.addListener((alarm) => {
   }
 });
 
+// Notification click handler
+chrome.notifications.onClicked.addListener((notificationId) => {
+  if (notificationId === 'hanishot-crx-update') {
+    chrome.runtime.reload();
+  } else if (notificationId === 'hanishot-github-update' || notificationId.startsWith('hanishot-')) {
+    chrome.tabs.create({ url: 'https://github.com/novosadskigari/HaniShot' });
+  }
+});
+
+// Automatic runtime update handler
+chrome.runtime.onUpdateAvailable.addListener(async (details) => {
+  const { autoUpdateEnabled = false } = await chrome.storage.local.get({ autoUpdateEnabled: false });
+  if (autoUpdateEnabled) {
+    chrome.runtime.reload();
+  } else {
+    chrome.notifications.create('hanishot-crx-update', {
+      type: 'basic',
+      iconUrl: chrome.runtime.getURL('icons/icon-128.png'),
+      title: 'HaniShot Update Available',
+      message: `Version ${details.version} is ready to install. Click here to restart extension.`,
+      priority: 2
+    });
+  }
+});
+
 // Keyboard commands handler
 chrome.commands.onCommand.addListener((command) => {
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
@@ -269,28 +294,15 @@ function handleRecordingStatusChange(data) {
     isRecordingActive = false;
     isPaused = false;
     broadcastToTab(recordingTabId, { type: 'HIDE_FLOATING_BAR' });
-    closeOffscreenDocument();
+    // Allow offscreen context sufficient time to flush IndexedDB writes and downloads
+    setTimeout(() => {
+      closeOffscreenDocument();
+    }, 2500);
   }
 }
 
 async function handleChunkReady(chunkData) {
-  // If autoDownload enabled, trigger download
-  if (chunkData.autoDownload) {
-    const item = await getMediaItem(chunkData.id);
-    if (item && item.blob) {
-      const url = URL.createObjectURL(item.blob);
-      chrome.downloads.download({
-        url,
-        filename: chunkData.filename,
-        saveAs: false
-      }, (downloadId) => {
-        // Clean up object URL shortly after download initializes
-        setTimeout(() => URL.revokeObjectURL(url), 10000);
-      });
-    }
-  }
-
-  // If this was the final chunk of recording session, open Viewer to preview
+  // If this was the final chunk of recording session, open Viewer to preview and save
   if (chunkData.isFinal) {
     chrome.tabs.create({
       url: chrome.runtime.getURL(`viewer/viewer.html?id=${chunkData.id}`)

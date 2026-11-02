@@ -18,7 +18,7 @@
       </div>
 
       <!-- Screenshot Tools (Shown only for images) -->
-      <div class="editor-toolbar" id="imageToolbar">
+      <div class="editor-toolbar" id="imageToolbar" style="display: none;">
         <div class="tool-group">
           <button type="button" class="tool-btn active" data-tool="select" title="Move / Select">✋</button>
           <button type="button" class="tool-btn" data-tool="rect" title="Rectangle">⬜</button>
@@ -49,21 +49,27 @@
 
       <!-- Action buttons -->
       <div class="topbar-right">
-        <button type="button" id="copyBtn" class="btn btn-secondary" title="Copy to clipboard">📋 Copy</button>
+        <button type="button" id="copyBtn" class="btn btn-secondary" style="display: none;" title="Copy to clipboard">📋 Copy</button>
         <button type="button" id="downloadBtn" class="btn btn-primary" title="Download file to computer">⬇️ Download</button>
       </div>
     </header>
 
     <!-- Main Workspace -->
     <main class="workspace" id="workspaceContainer">
+      <!-- Loading State -->
+      <div id="loadingState" style="text-align: center; color: #94a3b8;">
+        <div style="font-size: 24px; margin-bottom: 8px;">⏳</div>
+        <div>Loading media...</div>
+      </div>
+
       <!-- Image Canvas Container -->
-      <div class="canvas-wrapper" id="canvasWrapper">
+      <div class="canvas-wrapper" id="canvasWrapper" style="display: none;">
         <canvas id="mainCanvas"></canvas>
       </div>
 
       <!-- Video Player Container (Hidden by default) -->
       <div class="video-wrapper" id="videoWrapper" style="display: none;">
-        <video id="mainVideo" controls autoplay></video>
+        <video id="mainVideo" controls autoplay playsinline></video>
         <div class="video-meta-card">
           <div class="meta-item">
             <span class="meta-label">File Name:</span>
@@ -78,10 +84,18 @@
             <span class="meta-val text-green">100% Local (Unlimited)</span>
           </div>
           <div class="meta-item">
-            <span class="meta-label">Author:</span>
-            <span class="meta-val"><a href="https://niceworkdone.com" target="_blank" rel="noopener noreferrer" style="color: #38bdf8; text-decoration: none;">Developed with ❤️ by NWD</a></span>
+            <span class="meta-label">Credits:</span>
+            <span class="meta-val"><a href="https://github.com/novosadskigari/HaniShot" target="_blank" rel="noopener noreferrer" style="color: #38bdf8; text-decoration: none;">GitHub: novosadskigari/HaniShot</a></span>
           </div>
         </div>
+      </div>
+
+      <!-- Error State -->
+      <div id="errorState" style="display: none; text-align: center; color: #94a3b8; max-width: 400px;">
+        <div style="font-size: 32px; margin-bottom: 12px;">⚠️</div>
+        <h3 style="color: #f8fafc; margin-bottom: 8px;">Media Not Found</h3>
+        <p style="font-size: 14px; margin-bottom: 16px;">The requested recording or screenshot could not be loaded.</p>
+        <a href="../gallery/gallery.html" class="btn btn-secondary">Open Local Gallery</a>
       </div>
     </main>
   </div>
