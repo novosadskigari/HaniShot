@@ -1,7 +1,7 @@
 {
-  "version": "1.0.0",
-  "releaseDate": "2026-10-22",
-  "changelog": "Initial release: Unlimited screen recording, 30-minute auto-split video chunking, full-page screenshots, canvas annotations, and 100% private local storage.",
+  "version": "1.0.2",
+  "releaseDate": "2026-11-02",
+  "changelog": "v1.0.2: Screenshot first tab order, video recording and download fixes, transparent crop mask overlay, NWD credits and donation links.",
   "repoUrl": "https://github.com/novosadskigari/HaniShot",
   "downloadUrl": "https://github.com/novosadskigari/HaniShot/archive/refs/heads/main.zip"
 }

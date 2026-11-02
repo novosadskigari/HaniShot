@@ -154,4 +154,8 @@ This project is licensed under the [MIT License](LICENSE). Free for personal and
 
 ## 👨‍💻 Credits & Author
 
-Developed with ❤️ • GitHub repository: **[https://github.com/novosadskigari/HaniShot](https://github.com/novosadskigari/HaniShot)**
+Developed with ❤️ by **[NWD](https://github.com/novosadskigari/HaniShot)**
+
+### ☕ Support & Donations
+- 🥃 [Buy me a Jägermeister](https://coff.ee/damirbodor)
+- 💰 [Donate with PayPal](http://paypal.me/damirnwd)
