@@ -1,6 +1,7 @@
 /**
  * HaniShot - Interactive Area Crop Selection
- * Injects a clean draggable crop overlay onto the active web page with transparent mask.
+ * Uses an SVG cutout mask for a clean, semi-transparent backdrop like Awesome Screenshot.
+ * Eliminates GPU box-shadow rendering artifacts and solid color blocks.
  */
 
 (function () {
@@ -16,12 +17,31 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(0, 0, 0, 0.15);
     z-index: 2147483647;
     cursor: crosshair;
     user-select: none;
     overflow: hidden;
+    background: transparent;
   `;
+
+  // SVG Cutout Mask (standard, hardware-accelerated, zero-artifact transparent hole)
+  const svgNS = 'http://www.w3.org/2000/svg';
+  const svg = document.createElementNS(svgNS, 'svg');
+  svg.id = 'hanishot-crop-svg';
+  svg.style.cssText = `
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  `;
+
+  const maskPath = document.createElementNS(svgNS, 'path');
+  maskPath.setAttribute('fill-rule', 'evenodd');
+  maskPath.setAttribute('fill', 'rgba(0, 0, 0, 0.35)');
+  svg.appendChild(maskPath);
+  overlay.appendChild(svg);
 
   // Initial instruction banner like Awesome Screenshot
   const hintBanner = document.createElement('div');
@@ -31,7 +51,9 @@
     top: 24px;
     left: 50%;
     transform: translateX(-50%);
-    background: rgba(15, 23, 42, 0.88);
+    background: rgba(15, 23, 42, 0.85);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     color: #f8fafc;
     padding: 8px 18px;
     border-radius: 20px;
@@ -46,6 +68,7 @@
   hintBanner.textContent = '✂️ Click and drag to select area • Press Esc to cancel';
   overlay.appendChild(hintBanner);
 
+  // The selection border rectangle (completely transparent inside, NO box-shadow)
   const selectionBox = document.createElement('div');
   selectionBox.id = 'hanishot-selection-box';
   selectionBox.style.cssText = `
@@ -54,25 +77,26 @@
     background: transparent;
     display: none;
     pointer-events: none;
-    box-shadow: 0 0 0 99999px rgba(0, 0, 0, 0.35);
   `;
 
+  // Floating toolbar with frosted glass effect (never solid dark opaque)
   const toolbar = document.createElement('div');
   toolbar.id = 'hanishot-crop-toolbar';
   toolbar.style.cssText = `
     position: absolute;
-    bottom: -48px;
-    right: 0;
     display: none;
-    background: #0f172a;
-    border: 1px solid #334155;
+    background: rgba(15, 23, 42, 0.88);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
     border-radius: 8px;
     padding: 6px 12px;
     gap: 8px;
     align-items: center;
-    box-shadow: 0 6px 18px rgba(0,0,0,0.45);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4);
     pointer-events: auto;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    z-index: 2;
   `;
 
   const sizeBadge = document.createElement('span');
@@ -87,9 +111,9 @@
   const cancelBtn = document.createElement('button');
   cancelBtn.textContent = 'Cancel (Esc)';
   cancelBtn.style.cssText = `
-    background: #334155;
+    background: rgba(255, 255, 255, 0.12);
     color: #f8fafc;
-    border: none;
+    border: 1px solid rgba(255, 255, 255, 0.1);
     padding: 5px 10px;
     border-radius: 4px;
     cursor: pointer;
@@ -125,6 +149,21 @@
   let isSelecting = false;
   let hasSelection = false;
 
+  // Set initial backdrop (full semi-transparent veil)
+  function renderMask(left = 0, top = 0, width = 0, height = 0) {
+    const W = window.innerWidth;
+    const H = window.innerHeight;
+    if (width > 2 && height > 2) {
+      // Outer rect + cutout inner rect via evenodd rule
+      maskPath.setAttribute('d', `M 0 0 H ${W} V ${H} H 0 Z M ${left} ${top} V ${top + height} H ${left + width} V ${top} Z`);
+    } else {
+      // Full veil before dragging starts
+      maskPath.setAttribute('d', `M 0 0 H ${W} V ${H} H 0 Z`);
+    }
+  }
+
+  renderMask();
+
   function updateBox(x1, y1, x2, y2) {
     const left = Math.min(x1, x2);
     const top = Math.min(y1, y2);
@@ -133,9 +172,11 @@
 
     if (width > 3 || height > 3) {
       hintBanner.style.opacity = '0';
-      overlay.style.background = 'transparent';
       hasSelection = true;
     }
+
+    // Update SVG cutout hole
+    renderMask(left, top, width, height);
 
     selectionBox.style.left = `${left}px`;
     selectionBox.style.top = `${top}px`;
@@ -145,11 +186,11 @@
 
     sizeBadge.textContent = `${Math.round(width)} × ${Math.round(height)} px`;
 
-    // Position toolbar
+    // Position toolbar cleanly without occluding
     toolbar.style.display = 'flex';
     let tbTop = top + height + 8;
-    if (tbTop + 50 > window.innerHeight) {
-      tbTop = top - 46;
+    if (tbTop + 46 > window.innerHeight) {
+      tbTop = top - 44;
     }
     if (tbTop < 8) tbTop = 8;
     toolbar.style.top = `${tbTop}px`;
@@ -217,6 +258,15 @@
       removeOverlay();
     } else if (e.key === 'Enter' && hasSelection) {
       confirmCapture();
+    }
+  });
+
+  window.addEventListener('resize', () => {
+    if (hasSelection) {
+      const rect = selectionBox.getBoundingClientRect();
+      renderMask(rect.left, rect.top, rect.width, rect.height);
+    } else {
+      renderMask();
     }
   });
 })();

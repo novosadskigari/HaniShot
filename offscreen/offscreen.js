@@ -271,20 +271,16 @@ async function finalizeChunk(isFinal) {
     console.error('Failed to save chunk to IndexedDB:', err);
   }
 
-  // If autoDownloadVideo is enabled, trigger direct download from offscreen DOM context
-  if (currentConfig.autoDownloadVideo !== false && blob.size > 0) {
-    try {
-      const downloadUrl = URL.createObjectURL(blob);
-      chrome.downloads.download({
-        url: downloadUrl,
-        filename,
-        saveAs: false
-      }, (downloadId) => {
-        setTimeout(() => URL.revokeObjectURL(downloadUrl), 30000);
-      });
-    } catch (e) {
-      console.warn('Auto download from offscreen context failed:', e);
-    }
+  // Create a blob URL in offscreen DOM context (valid across extension processes)
+  let blobUrl = '';
+  try {
+    blobUrl = URL.createObjectURL(blob);
+    // Keep blob URL active for 60 seconds
+    setTimeout(() => {
+      try { URL.revokeObjectURL(blobUrl); } catch (_) {}
+    }, 60000);
+  } catch (e) {
+    console.warn('Failed to create object URL in offscreen:', e);
   }
 
   // Notify service worker that chunk is ready and persisted
@@ -296,7 +292,8 @@ async function finalizeChunk(isFinal) {
       size: blob.size,
       partIndex: currentPart,
       isFinal,
-      autoDownload: false
+      blobUrl,
+      autoDownload: currentConfig.autoDownloadVideo !== false
     }
   });
 
