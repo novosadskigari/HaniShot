@@ -60,10 +60,9 @@ English
 | Asset | Dimensions | Status | Filename / Notes |
 |-------|------------|--------|------------------|
 | Store Icon [REQUIRED] | 128×128 PNG | ✅ Ready | `icons/icon-128.png` |
-| Screenshot 1 [REQUIRED] | 1280×800 or 640×400 | ⬜ To Prepare | Popup screen: Capture and Record options |
-| Screenshot 2 [RECOMMENDED] | 1280×800 or 640×400 | ⬜ To Prepare | Selected Area crop tool with transparent overlay |
-| Screenshot 3 [RECOMMENDED] | 1280×800 or 640×400 | ⬜ To Prepare | Video recording in progress with audio controls |
-| Screenshot 4 [RECOMMENDED] | 1280×800 or 640×400 | ⬜ To Prepare | Local media gallery and video playback |
+| Screenshot 1 [REQUIRED] | 1280×800 PNG | ✅ Ready | `store-assets/screenshot-1.png` (Screenshot Modes) |
+| Screenshot 2 [RECOMMENDED] | 1280×800 PNG | ✅ Ready | `store-assets/screenshot-2.png` (Video & Audio Recording) |
+| Screenshot 3 [RECOMMENDED] | 1280×800 PNG | ✅ Ready | `store-assets/screenshot-3.png` (Local Media Gallery) |
 | Small Promo Tile [RECOMMENDED] | 440×280 PNG | ⬜ Optional | Honeycomb & REC badge on dark theme |
 | Marquee Promo Tile | 1400×560 PNG | ⬜ Optional | Hero graphic for Chrome Web Store showcase |
 
